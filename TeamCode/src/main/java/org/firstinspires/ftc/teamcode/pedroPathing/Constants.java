@@ -15,16 +15,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-/**
- * Ficheiro de constantes unificado para toda a configuração do robô.
- * Organizado hierarquicamente por subsistema para clareza e manutenção.
- */
 public final class Constants {
     private Constants() {} // Impede a instanciação
 
-    /**
-     * Constantes para o subsistema Drivetrain.
-     */
     public static final class Drivetrain {
         public static final class Hardware {
             public static final String LEFT_FRONT_MOTOR = "leftFront";
@@ -81,32 +74,30 @@ public final class Constants {
         }
     }
 
-    /**
-     * Constantes para o subsistema Lift (Elevador).
-     */
-    public static final class Lift {
-        public static final String LIFT_MOTOR = "liftMotor";
-        public static final int GROUND_POSITION = 0;
-        public static final int SCORE_POSITION = 1200;
-    }
-
-    /**
-     * Constantes para o subsistema Shooter (Lançador).
-     */
     public static final class Shooter {
-        public static final String SHOOTER_MOTOR = "shooterMotor";
+        public static final String SHOOTER_MOTOR_NAME = "shooterMotor";
+        public static double kP = 0.005;
+        public static double kI = 0.0;
+        public static double kD = 0.0001;
+        public static double kF = 0.05;
+        public static double TARGET_VELOCITY = 2200.0;
+        public static double VELOCITY_TOLERANCE = 50.0;
     }
 
-    /**
-     * Constantes para o subsistema Intake (Coletor).
-     */
+    public static final class Vision {
+        public static double TURN_KP = 0.015;
+        public static double TURN_KI = 0.0;
+        public static double TURN_KD = 0.001;
+        public static double DISTANCE_KP = 0.04;
+        public static double DISTANCE_KI = 0.0;
+        public static double DISTANCE_KD = 0.002;
+        public static double TARGET_TY = -5.0;
+    }
+
     public static final class Intake {
         public static final String INTAKE_MOTOR = "intakeMotor";
     }
 
-    /**
-     * Posições importantes no campo.
-     */
     public static final class FieldPositions {
         public static final Pose SCORING_POSITION = new Pose(48, 72, Math.toRadians(90));
     }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSubsystem;
 
 public class ShootCommand extends CommandBase {
@@ -29,7 +30,7 @@ public class ShootCommand extends CommandBase {
     public void initialize() {
         switch (action) {
             case SPIN_UP:
-                shooter.spinUp(targetVelocity);
+                shooter.setTargetVelocity(targetVelocity);
                 break;
             case STOP:
                 shooter.stop();
@@ -39,19 +40,15 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // A ação de parar é instantânea.
         if (action == Action.STOP) {
             return true;
         }
-        // Para SPIN_UP, o comando termina quando atinge a velocidade.
-        // Útil para sequências autônomas.
-        return shooter.isAtTargetVelocity(targetVelocity);
+        return shooter.atTargetVelocity(Constants.Shooter.VELOCITY_TOLERANCE);
     }
 
     @Override
     public void end(boolean interrupted) {
-        // Se o comando for interrompido, para o motor por segurança.
-        if (interrupted) {
+        if (interrupted && action == Action.SPIN_UP) {
             shooter.stop();
         }
     }

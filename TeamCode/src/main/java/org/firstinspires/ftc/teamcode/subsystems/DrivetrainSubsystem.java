@@ -9,7 +9,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final Follower follower;
 
     public DrivetrainSubsystem(HardwareMap hardwareMap) {
-        follower = Constants.createFollower(hardwareMap);
+        follower = Constants.Drivetrain.createFollower(hardwareMap);
     }
 
     public Follower getFollower() {

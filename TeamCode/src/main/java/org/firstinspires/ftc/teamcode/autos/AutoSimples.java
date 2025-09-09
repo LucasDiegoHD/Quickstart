@@ -1,3 +1,4 @@
+// Ficheiro: autos/AutoShootThree.java
 package org.firstinspires.ftc.teamcode.autos;
 
 import com.arcrobotics.ftclib.command.Command;
@@ -5,7 +6,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.robot.RobotContainer;
 
-@Autonomous
+@Autonomous(name = "Auto: Atirar 3")
 public class AutoSimples extends CommandOpMode {
 
     private RobotContainer robot;
@@ -13,19 +14,12 @@ public class AutoSimples extends CommandOpMode {
 
     @Override
     public void initialize() {
-        robot = new RobotContainer(hardwareMap, null, null);
-        autonomousCommand = robot.getAutoAvancadoCommand();
-    }
+        robot = new RobotContainer(hardwareMap, telemetry, null, null);
 
-    @Override
-    public void runOpMode() throws InterruptedException {
-        initialize();
-        waitForStart();
+        // Pega o NOVO comando que criamos para atirar 3
+        autonomousCommand = robot.getShootThreeAutoCommand();
+
+        // Agenda o comando para ser executado após o START
         schedule(autonomousCommand);
-
-        while (!isStopRequested() && opModeIsActive()) {
-            run();
-        }
-        reset();
     }
 }

@@ -1,49 +1,66 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.commands.ShootCommand;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    private static final double VELOCITY_TOLERANCE = 20.0; // Ticks por segundo
-
     private final DcMotorEx shooterMotor;
+    private final PIDFController pidfController;
+    private final Telemetry telemetry;
+    private double targetVelocity = 0.0;
 
-    public ShooterSubsystem(HardwareMap hardwareMap) {
-        shooterMotor = hardwareMap.get(DcMotorEx.class, TConstants.Shooter.ShooterMotor);
-        shooterMotor.setDirection(DcMotor.Direction.FORWARD); // Ajuste conforme necessário
-        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // NOTA: Estes coeficientes PIDF são exemplos e DEVEM ser afinados.
-        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 3, 0, 12);
-        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+    public ShooterSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+        shooterMotor = hardwareMap.get(DcMotorEx.class, Constants.Shooter.SHOOTER_MOTOR_NAME);
+        shooterMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        shooterMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        pidfController = new PIDFController(Constants.Shooter.kP, Constants.Shooter.kI, Constants.Shooter.kD, Constants.Shooter.kF);
     }
 
-    /**
-     * Ativa o motor do lançador para atingir uma velocidade alvo.
-     * @param targetVelocity A velocidade desejada em ticks por segundo.
-     */
-    public void spinUp(double targetVelocity) {
-        shooterMotor.setVelocity(targetVelocity);
+    public void setTargetVelocity(double velocity) {
+        this.targetVelocity = velocity;
     }
 
-    /**
-     * Para completamente o motor do lançador.
-     */
     public void stop() {
-        shooterMotor.setVelocity(0);
+        setTargetVelocity(0);
     }
 
-    /**
-     * Verifica se o motor atingiu a velocidade alvo dentro de uma tolerância.
-     * @param targetVelocity A velocidade alvo a ser verificada.
-     * @return true se a velocidade atual estiver dentro da tolerância.
-     */
-    public boolean isAtTargetVelocity(double targetVelocity) {
-        return Math.abs(shooterMotor.getVelocity() - targetVelocity) < VELOCITY_TOLERANCE;
+    public boolean atTargetVelocity(double tolerance) {
+        return Math.abs(getCurrentVelocity() - targetVelocity) < tolerance;
+    }
+
+    public double getCurrentVelocity() {
+        return shooterMotor.getVelocity();
+    }
+
+    @Override
+    public void periodic() {
+        pidfController.setPIDF(Constants.Shooter.kP, Constants.Shooter.kI, Constants.Shooter.kD, Constants.Shooter.kF);
+
+        if (targetVelocity!= 0) {
+            double power = pidfController.calculate(getCurrentVelocity(), targetVelocity);
+            shooterMotor.setPower(power);
+        } else {
+            shooterMotor.setPower(0);
+        }
+
+        telemetry.addData("Shooter Target Vel", "%.2f", targetVelocity);
+        telemetry.addData("Shooter Current Vel", "%.2f", getCurrentVelocity());
+    }
+
+    // --- FÁBRICAS DE COMANDOS ---
+    public Command spinUpCommand() {
+        return new ShootCommand(this, ShootCommand.Action.SPIN_UP, Constants.Shooter.TARGET_VELOCITY);
+    }
+
+    public Command stopCommand() {
+        return new ShootCommand(this, ShootCommand.Action.STOP);
     }
 }

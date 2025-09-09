@@ -1,4 +1,4 @@
-// Ficheiro: TeleOpFixo.java
+// Ficheiro: teleop.java
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -18,6 +18,7 @@ public class teleop extends CommandOpMode {
         driverGamepad = new GamepadEx(gamepad1);
         operatorGamepad = new GamepadEx(gamepad2);
 
-        robot = new RobotContainer(hardwareMap, driverGamepad, operatorGamepad);
+        // Passa o hardwareMap, a telemetria e os gamepads para o RobotContainer
+        robot = new RobotContainer(hardwareMap, telemetry, driverGamepad, operatorGamepad);
     }
 }

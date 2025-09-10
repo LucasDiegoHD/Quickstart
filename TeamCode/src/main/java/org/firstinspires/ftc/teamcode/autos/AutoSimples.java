@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.autos;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.bylazar.configurables.annotations.IgnoreConfigurable;
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.robot.RobotContainer;
 
@@ -12,9 +15,14 @@ public class AutoSimples extends CommandOpMode {
     private RobotContainer robot;
     private Command autonomousCommand;
 
+    @IgnoreConfigurable
+    static TelemetryManager telemetryM;
+
     @Override
     public void initialize() {
-        robot = new RobotContainer(hardwareMap, telemetry, null, null);
+        telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
+
+        robot = new RobotContainer(hardwareMap, telemetryM, null, null);
 
         // Pega o NOVO comando que criamos para atirar 3
         autonomousCommand = robot.getShootThreeAutoCommand();

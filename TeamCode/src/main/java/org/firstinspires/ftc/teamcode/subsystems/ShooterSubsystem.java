@@ -3,20 +3,23 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+@Configurable
 
 public class ShooterSubsystem extends SubsystemBase {
 
     private final DcMotorEx shooterMotor;
     private final PIDFController pidfController;
-    private final Telemetry telemetry;
+    private final TelemetryManager telemetry;
     private double targetVelocity = 0.0;
 
-    public ShooterSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+    public ShooterSubsystem(HardwareMap hardwareMap, TelemetryManager telemetry) {
         this.telemetry = telemetry;
         shooterMotor = hardwareMap.get(DcMotorEx.class, Constants.Shooter.SHOOTER_MOTOR_NAME);
         shooterMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
@@ -51,8 +54,6 @@ public class ShooterSubsystem extends SubsystemBase {
             shooterMotor.setPower(0);
         }
 
-        telemetry.addData("Shooter Target Vel", "%.2f", targetVelocity);
-        telemetry.addData("Shooter Current Vel", "%.2f", getCurrentVelocity());
     }
 
     // --- FÁBRICAS DE COMANDOS ---

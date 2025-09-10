@@ -1,6 +1,7 @@
 // Ficheiro: pedroPathing/Constants.java
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
@@ -14,21 +15,21 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-public final class Constants {
+@Configurable
+public class Constants {
     private Constants() {} // Impede a instanciação
-
-    public static final class Drivetrain {
-        public static final class Hardware {
-            public static final String LEFT_FRONT_MOTOR = "leftFront";
-            public static final String RIGHT_FRONT_MOTOR = "rightFront";
-            public static final String LEFT_REAR_MOTOR = "leftRear";
-            public static final String RIGHT_REAR_MOTOR = "rightRear";
-            public static final String PINPOINT_LOCALIZER = "pinpoint";
+    public static int teste = 0;
+    public static class Drivetrain {
+        public static class Hardware {
+            public static String LEFT_FRONT_MOTOR = "leftFront";
+            public static String RIGHT_FRONT_MOTOR = "rightFront";
+            public static String LEFT_REAR_MOTOR = "leftRear";
+            public static String RIGHT_REAR_MOTOR = "rightRear";
+            public static String PINPOINT_LOCALIZER = "pinpoint";
         }
 
-        public static final class PedroPathing {
-            public static final FollowerConstants FOLLOWER_CONSTANTS = new FollowerConstants()
+        public static class PedroPathing {
+            public static FollowerConstants FOLLOWER_CONSTANTS = new FollowerConstants()
                     .mass(13)
                     .forwardZeroPowerAcceleration(-25.138658560079815)
                     .lateralZeroPowerAcceleration(-78.96531426769552)
@@ -38,7 +39,7 @@ public final class Constants {
                             new FilteredPIDFCoefficients(0.025, 0, 0.0002, 1, 0)
                     );
 
-            public static final MecanumConstants MECANUM_CONSTANTS = new MecanumConstants()
+            public static MecanumConstants MECANUM_CONSTANTS = new MecanumConstants()
                     .leftFrontMotorName(Hardware.LEFT_FRONT_MOTOR)
                     .leftRearMotorName(Hardware.LEFT_REAR_MOTOR)
                     .rightFrontMotorName(Hardware.RIGHT_FRONT_MOTOR)
@@ -51,7 +52,7 @@ public final class Constants {
                     .yVelocity(65.006779349307)
                     .useBrakeModeInTeleOp(true);
 
-            public static final PinpointConstants LOCALIZER_CONSTANTS = new PinpointConstants()
+            public static PinpointConstants LOCALIZER_CONSTANTS = new PinpointConstants()
                     .forwardPodY(-5.5)
                     .strafePodX(7)
                     .distanceUnit(DistanceUnit.INCH)
@@ -60,7 +61,7 @@ public final class Constants {
                             GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
                     );
 
-            public static final PathConstraints PATH_CONSTRAINTS = new PathConstraints(
+            public static PathConstraints PATH_CONSTRAINTS = new PathConstraints(
                     0.995, 500, 2.5, 1
             );
         }
@@ -74,9 +75,9 @@ public final class Constants {
         }
     }
 
-    public static final class Shooter {
-        public static final String SHOOTER_MOTOR_NAME = "shooterMotor";
-        public static double kP = 0.005;
+    public static class Shooter {
+        public static String SHOOTER_MOTOR_NAME = "shooterMotor";
+        public static double kP = 0.01;
         public static double kI = 0.0;
         public static double kD = 0.0001;
         public static double kF = 0.05;
@@ -84,21 +85,17 @@ public final class Constants {
         public static double VELOCITY_TOLERANCE = 50.0;
     }
 
-    public static final class Vision {
-        public static double TURN_KP = 0.015;
-        public static double TURN_KI = 0.0;
-        public static double TURN_KD = 0.001;
-        public static double DISTANCE_KP = 0.04;
-        public static double DISTANCE_KI = 0.0;
-        public static double DISTANCE_KD = 0.002;
-        public static double TARGET_TY = -5.0;
+    public static class Vision {
+        public static double TURN_KP = 0.02;
+        public static double TURN_KI = 0.0015;
+        public static double TURN_KD = 0.0030;
+    public static Vision vision = new Vision();
+    public static class Intake {
+        public static String INTAKE_MOTOR = "intakeMotor";
     }
 
-    public static final class Intake {
-        public static final String INTAKE_MOTOR = "intakeMotor";
+    public static class FieldPositions {
+        public static Pose SCORING_POSITION = new Pose(48, 72, Math.toRadians(90));
     }
-
-    public static final class FieldPositions {
-        public static final Pose SCORING_POSITION = new Pose(48, 72, Math.toRadians(90));
-    }
+}
 }

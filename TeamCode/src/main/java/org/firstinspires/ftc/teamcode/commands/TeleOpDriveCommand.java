@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands.drivetrain;
+package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -24,9 +24,9 @@ public class TeleOpDriveCommand extends CommandBase {
     public void execute() {
         // O método foi renomeado para setTeleOpMovementVectors na v2.0
         drivetrain.getFollower().setTeleOpDrive(
-                -driverGamepad.getLeftY(),    // Para a frente / Para trás
-                -driverGamepad.getLeftX(),    // Para a esquerda / Para a direita (strafe)
-                -driverGamepad.getRightX(),   // Rotação
+                driverGamepad.getLeftY(),
+                driverGamepad.getLeftX(),
+                -driverGamepad.getRightX(),
                 false
         );
     }

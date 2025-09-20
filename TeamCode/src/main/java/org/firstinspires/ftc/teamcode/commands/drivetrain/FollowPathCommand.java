@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode.commands;
+// Ficheiro: commands/drivetrain/FollowPathCommand.java
+package org.firstinspires.ftc.teamcode.commands.drivetrain;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.pedropathing.paths.PathChain;
